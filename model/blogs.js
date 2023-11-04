@@ -1,30 +1,63 @@
-const { file } = require("googleapis/build/src/apis/file");
 const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate");
+const mongoosePaginate = require ("mongoose-paginate");
 
 const schema = new mongoose.Schema(
-  {  
+  {
+   
     blogId: {
       type: String,
     },
     title: {
       type: String,
+      required: true,
+      unique: true,
     },
     titleImage: {
-      data: Buffer, 
-      contentType: String,
+      public_id: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
+    content: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "BlogContent",
+      },
+    ],
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: [true, "User information is required"],
     },
     tags: {
       type: [
         {
           type: String,
           enum: [
-            "Travels",
-            "Sports",           
+            "Vedic astrology",
+            "Tarot card reading",
+            "Kundli",
+            "Palmistry",
+            "Numerology",
+            "Astrology",
+            "Zodiac",
+            "Festivals",
+            "Mythology",
+            "Meditation",
+            "Lal Kitab",
+            "Samudrik Shastra",
+            "Transits",
+            "Gemstone",
+            "Love Compatibility",
+            "Festivals",
+            "Chalisa",
+            "Arti",
+            "Black Magic Removals",
+            "Mantra",
+            "Hindu Mythology",
+            "Hindu God and Goddess",
           ],
         },
       ],
@@ -77,7 +110,5 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-schema.plugin(mongoosePaginate);
 const Blog = mongoose.model("Blog", schema);
-schema.index({ title: "text" });
 module.exports = Blog;
